@@ -20,26 +20,20 @@ jobs:
 
     - name: Configure AWS credentials
       run: |
-        echo ${{ secrets.AWS_ACCESS_KEY_ID }} > aws_access_key
-        echo ${{ secrets.AWS_SECRET_ACCESS_KEY }} > aws_secret_key
+        echo ${{ secrets.TF_VAR_AWS_ACCESS_KEY_ID }} > aws_access_key
+        echo ${{ secrets.TF_VAR_AWS_SECRET_ACCESS_KEY }} > aws_secret_key
         aws configure set aws_access_key_id $(cat aws_access_key)
         aws configure set aws_secret_access_key $(cat aws_secret_key)
       env:
         AWS_DEFAULT_REGION: us-east-1  # Change to your region
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.TF_VAR_AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.TF_VAR_AWS_SECRET_ACCESS_KEY }}
 
     - name: Initialize Terraform
       run: terraform init
 
     - name: Plan Terraform Changes
-      run: terraform plan -input=false -out=tfplan
-      with:
-        - TF_VAR_aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        - TF_VAR_aws_secret_acess_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
+      run: terraform plan -var="TF_VAR_aws_access_key_id=${{ secrets.TF_VAR_AWS_ACCESS_KEY_ID }}" -var="TF_VAR_aws_secret_access_key=${{ secrets.TF_VAR_AWS_SECRET_ACCESS_KEY }}" -input=false -out=tfplan
+      
     - name: Apply Terraform Changes
       run: terraform apply -input=false -auto-approve tfplan
-      with:
-        - TF_VAR_aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        - TF_VAR_aws_secret_acess_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
