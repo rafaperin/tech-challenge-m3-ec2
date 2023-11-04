@@ -33,7 +33,7 @@ jobs:
       run: terraform init
 
     - name: Plan Terraform Changes
-      run: terraform plan -var="TF_VAR_aws_access_key_id=${{ secrets.TF_VAR_AWS_ACCESS_KEY_ID }}" -var="TF_VAR_aws_secret_access_key=${{ secrets.TF_VAR_AWS_SECRET_ACCESS_KEY }}" -input=false -out=tfplan
+      run: terraform plan -var="tf_var_aws_access_key_id=${{ secrets.TF_VAR_AWS_ACCESS_KEY_ID }}" -var="tf_var_aws_secret_acess_key=${{ secrets.TF_VAR_AWS_SECRET_ACCESS_KEY }}" -input=false -out=tfplan
       
     - name: Apply Terraform Changes
       run: terraform apply -input=false -auto-approve tfplan
