@@ -1,7 +1,7 @@
 provider "aws" {
   region = "us-east-1"  # Change to your preferred region
-  access_key = var.aws_access_key_id
-  secret_key = var.aws_secret_acess_key
+  access_key = var.tf_var_aws_access_key_id
+  secret_key = var.tf_var_aws_secret_acess_key
 }
 
 resource "aws_ecr_repository" "my_ecr" {
